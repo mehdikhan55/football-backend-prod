@@ -24,6 +24,13 @@ app.use(cors());
 
 app.use(express.json());
 
+//Middleware
+app.use((req, res, next) => {
+  console.log(req.method, req.hostname, req.path);
+  next();
+})
+
+
 app.use("/auth", authRoutes);
 app.use("/grounds", verifyAdmin.verifyAdmin, groundRoutes);
 app.use("/admin", verifyAdmin.verifyAdmin, adminRoutes);

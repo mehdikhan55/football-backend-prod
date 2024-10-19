@@ -36,17 +36,60 @@ module.exports = {
       let emails = await Email.find();
       //also get email of all customers
       const customers = await Customer.find();
-      customers.forEach((customer) => {
-        emails.push({ email: customer.email });
-      });
-      //format the emails to be an array of strings
-      emails = emails.map((email) => email.email);
 
-      res.status(200).json({ emails });
+      const formattedEmails = emails.map((email) => ({
+        email: email.email,
+        createdAt: email.createdAt
+      }));
+
+
+      customers.forEach((customer) => {
+        formattedEmails.push({
+          email: customer.email,
+          createdAt: customer.createdAt
+        });
+      });
+
+      res.status(200).json(formattedEmails);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
   },
+
+  //get all users
+  getUsers: async (req, res) => {
+    try {
+      const customers = await Customer.find();
+      res.status(200).json({ customers });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
+  // Block a user
+  blockUser: async (req, res) => {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+
+    try {
+      const customer = await Customer.findById(id);
+      if (!customer) {
+        return res.status(404).json({ message: "Customer not found" });
+      }
+
+      // Toggle the status
+      customer.status = customer.status === "active" ? "blocked" : "active";
+      await customer.save();
+
+      return res.status(200).json({ message: `Customer ${customer.status} successfully` });
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  },
+
+
   //add to reserved times of a ground
   addReservedTime: async (req, res) => {
     try {
@@ -61,7 +104,7 @@ module.exports = {
       if (!ground) {
         return res.status(404).json({ message: "Ground not found" });
       }
-      
+
       //push in an object form {date,[start_time,end_time]}
       ground.reserved_times.push({
         date,

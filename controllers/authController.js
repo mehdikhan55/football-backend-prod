@@ -55,7 +55,7 @@ module.exports = {
       const { email, password } = req.body;
       const customer = await Customer.findOne({ email });
       if (!customer) {
-        return res.status(404).json({ message: "Customer not found" });
+        return res.status(404).json({ message: "Account not found" });
       }
       if (customer.status === "blocked") {
         return res.status(400).json({ message: "Customer is blocked" });

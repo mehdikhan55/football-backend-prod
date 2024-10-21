@@ -17,6 +17,7 @@ const generalRoutes = require("./routes/generalRoutes");
 const challengeRoutes = require("./routes/challengesRoutes");
 const teamRoutes = require("./routes/teamRoutes");
 const leagueRoutes = require("./routes/leagueRoutes");
+const bookingRoutes = require("./routes/bookingRoutes");
 
 dotenv.config();
 
@@ -37,6 +38,7 @@ app.use("/auth", authRoutes);
 app.use("/grounds", verifyAdmin.verifyAdmin, groundRoutes);
 app.use("/teams", verifyAdmin.verifyAdmin, teamRoutes);
 app.use("/leagues", verifyAdmin.verifyAdmin, leagueRoutes);
+app.use("/bookings", verifyAdmin.verifyAdmin, bookingRoutes);
 app.use("/admin", verifyAdmin.verifyAdmin, adminRoutes);
 app.use("/email", emailRoutes);
 app.use("/customer", verifyCustomer.verifyCustomer, customerRoutes);

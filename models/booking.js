@@ -40,7 +40,8 @@ const bookingSchema = new Schema({
         required: true,
     },
     ground: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: 'Ground',
         required: true,
     },
     createdAt: {

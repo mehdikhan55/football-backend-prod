@@ -14,6 +14,23 @@ module.exports = {
         }
     },
 
+    // Get a league
+    getLeague: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const league = await League.findById(id)
+                .populate("teams")
+                .populate("matches.teamA")
+                .populate("matches.teamB")
+                .populate("matches.scorers.team");
+            if (!league) {
+                return res.status(404).json({ message: "League not found" });
+            }
+            res.status(200).json({ league });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
     // Add a new league
     addLeague: async (req, res) => {
         console.log('Request Body:', req.body); 

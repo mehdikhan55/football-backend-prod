@@ -18,6 +18,7 @@ const matchSchema = new mongoose.Schema({
         {
             player: { type: String},
             team: { type: mongoose.Schema.Types.ObjectId, ref: 'Team' },
+            score: { type: Number},
         },
     ],
     date: { type: Date },

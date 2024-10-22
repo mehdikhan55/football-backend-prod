@@ -56,6 +56,22 @@ module.exports = {
     }
   },
 
+  //add an email
+  addEmail: async (req, res) => {
+    try {
+      const { email } = req.body;
+      if (!email) {
+        return res.status(400).json({ message: "Email is required" });
+      }
+
+      const newEmail = new Email({ email });
+      await newEmail.save();
+      return res.status(201).json({ message: "Email added successfully" });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
+
   //get all users
   getUsers: async (req, res) => {
     try {

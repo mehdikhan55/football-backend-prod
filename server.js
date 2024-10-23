@@ -19,6 +19,9 @@ const teamRoutes = require("./routes/teamRoutes");
 const leagueRoutes = require("./routes/leagueRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
 
+const customerTeamController = require("./controllers/customerTeamController"); 
+
+
 dotenv.config();
 
 const app = express();
@@ -34,6 +37,16 @@ app.use((req, res, next) => {
 })
 
 
+// team auth
+app.post("/customer/teams/register", customerTeamController.registerTeam);
+app.post("/customer/teams/login", customerTeamController.loginTeam);
+
+// other routes
+app.get("/customer/teams/",customerTeamController.getTeamsForCustomer);
+app.get("/customer/teams/team-profile", customerTeamController.getTeamProfile);
+
+
+
 app.use("/auth", authRoutes);
 app.use("/grounds", verifyAdmin.verifyAdmin, groundRoutes);
 app.use("/teams", verifyAdmin.verifyAdmin, teamRoutes);
@@ -44,7 +57,10 @@ app.use("/email", emailRoutes);
 app.use("/customer", verifyCustomer.verifyCustomer, customerRoutes);
 app.use("/reviews", verifyCustomer.verifyCustomer, reviewsRoutes);
 app.use("/general", generalRoutes);
-app.use("/admin/challenge", verifyAdmin.verifyAdmin, challengeRoutes);
+// app.use("/admin/challenge", verifyAdmin.verifyAdmin, challengeRoutes);
+app.use("/challenge", challengeRoutes);
+
+
 
 app.get("/", (req, res) => {
   res.send("Welcome to the Ground Booking API");

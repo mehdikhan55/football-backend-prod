@@ -12,6 +12,7 @@ module.exports = {
       res.status(500).json({ message: error.message });
     }
   },
+
   //add a new team
   addTeam: async (req, res) => {
     try {

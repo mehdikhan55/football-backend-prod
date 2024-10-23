@@ -37,7 +37,7 @@ const bookingSchema = new Schema({
     },
     paymentDate: {
         type: Date,
-        required: true,
+        required: false,
     },
     ground: {
         type: Schema.Types.ObjectId,

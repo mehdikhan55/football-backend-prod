@@ -79,6 +79,19 @@ module.exports = {
       if (customer) {
         return res.status(400).json({ message: "Customer already exists" });
       }
+      
+      const customer2 = await Customer.findOne({username});
+      if(customer2){
+        return res.status(400).json({ message: "Username already exists" });
+      }
+
+      const customer3 = await Customer.findOne({ phone });
+      if(customer3){
+        return res.status(400).json({ message: "Phone already registered" });
+      }
+
+
+      
 
       // Create new customer
       const newCustomer = new Customer({

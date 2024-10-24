@@ -1,4 +1,5 @@
 const Challenge = require("../models/challenges");
+const jwt = require("jsonwebtoken");
 
 module.exports = {
   getChallenges: async (req, res) => {
@@ -9,6 +10,24 @@ module.exports = {
         .populate("ground");
       return res.status(200).json({ challenges });
     } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  },
+  getChallengesForTeam: async (req, res) => {
+    try {
+      const token = req.headers.authorization;
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const teamId = decoded.id;
+      const challengesToGet = await Challenge.find({
+        challengedTeam: teamId,
+      })
+        .populate("challengerTeam")
+        .populate("challengedTeam")
+        .populate("ground");
+
+      return res.status(200).json({ challengesToGet });
+    } catch (error) {
+      console.log(error);
       return res.status(500).json({ message: error.message });
     }
   },
@@ -44,16 +63,24 @@ module.exports = {
   },
   addChallenge: async (req, res) => {
     try {
-      const { challengerTeam, challengedTeam, ground, status, date, time } =
-        req.body;
+      const { challenged, ground, status, date, time } = req.body;
+
+      console.log(req.body);
+      const token = req.headers.authorization;
+      console.log(token);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+      const challengerTeam = decoded.id;
+
       const newChallenge = new Challenge({
         challengerTeam,
-        challengedTeam,
+        challengedTeam: challenged,
         ground,
         status,
         date,
         time,
       });
+
       await newChallenge.save();
       return res.status(201).json({ message: "Challenge added successfully" });
     } catch (error) {

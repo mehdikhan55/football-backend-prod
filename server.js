@@ -18,8 +18,10 @@ const challengeRoutes = require("./routes/challengesRoutes");
 const teamRoutes = require("./routes/teamRoutes");
 const leagueRoutes = require("./routes/leagueRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
+const contactRoutes = require("./routes/contactRoutes");
 
 const customerTeamController = require("./controllers/customerTeamController"); 
+const leagueController = require("./controllers/leagueController");
 
 
 dotenv.config();
@@ -36,6 +38,10 @@ app.use((req, res, next) => {
   next();
 })
 
+// leagues 
+app.get("/teams/leagues", leagueController.getLeagues);
+app.get("/teams/leagues/:id", leagueController.getLeague);
+
 
 // team auth
 app.post("/customer/teams/register", customerTeamController.registerTeam);
@@ -48,6 +54,7 @@ app.get("/customer/teams/team-profile", customerTeamController.getTeamProfile);
 
 
 app.use("/auth", authRoutes);
+app.use("/contact", contactRoutes);
 app.use("/grounds", verifyAdmin.verifyAdmin, groundRoutes);
 app.use("/teams", verifyAdmin.verifyAdmin, teamRoutes);
 app.use("/leagues", verifyAdmin.verifyAdmin, leagueRoutes);

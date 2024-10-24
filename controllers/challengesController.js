@@ -107,6 +107,42 @@ module.exports = {
     }
   },
 
+  acceptChallenge: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const challenge = await Challenge.findByIdAndUpdate(
+        id,
+        { status: "accepted" },
+        { new: true }
+      );
+      if (!challenge) {
+        return res.status(404).json({ message: "Challenge not found" });
+      }
+      return res.status(200).json({ challenge });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: error.message });
+    }
+  },
+
+  rejectChallenge: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const challenge = await Challenge.findByIdAndUpdate
+        (id,
+          { status: "rejected" },
+          { new: true }
+        );
+      if (!challenge) {
+        return res.status(404).json({ message: "Challenge not found" });
+      }
+      return res.status(200).json({ challenge });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: error.message });
+    }
+  },
+
   // getChallenges: async (req, res) => {
   //   try {
   //     const challenges = await Challenge.find();

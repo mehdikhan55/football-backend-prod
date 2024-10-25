@@ -5,7 +5,12 @@ const bookingSchema = new Schema({
     customer: {
         type: Schema.Types.ObjectId,
         ref: 'Customer',
-        required: true,
+        required: false,
+    },
+    team: {
+        type: Schema.Types.ObjectId,
+        ref: 'Team',
+        required: false,
     },
     bookingDate: {
         type: Date,
@@ -43,6 +48,10 @@ const bookingSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Ground',
         required: true,
+    },
+    stillRequiredPlayers: {
+        type: Number,
+        required: false,
     },
     createdAt: {
         type: Date,

@@ -1,13 +1,15 @@
 const Booking = require("../models/booking");
 const Ground = require("../models/ground");
+const MatchRequest = require("../models/matchRequest");
 
 module.exports = {
   //get all bookings
   getBookings: async (req, res) => {
     try {
       const bookings = await Booking.find()
-      .populate("customer", "-password") 
-      .populate("ground");
+        .populate("customer", "-password")
+        .populate("ground")
+        .populate("team");
       return res.status(200).json({ bookings });
     } catch (error) {
       return res.status(500).json({ message: error.message });
@@ -17,7 +19,7 @@ module.exports = {
   addBooking: async (req, res) => {
     console.log('Request entered to addBooking');
     try {
-      const { customer, bookingDate, bookingTime, bookingDuration, bookingPrice, bookingStatus, paymentMethod, paymentStatus, paymentDate, ground } = req.body;
+      const { customer, team, playersRequired, bookingDate, bookingTime, bookingDuration, bookingPrice, bookingStatus, paymentMethod, paymentStatus, paymentDate, ground } = req.body;
       console.log('req.body', req.body);
       const targetGround = await Ground.findOne({ _id: ground });
       console.log('targetGround', targetGround);
@@ -49,7 +51,7 @@ module.exports = {
       if (bookingEndTime > endTime) {
         return res.status(400).json({ message: "Booking duration is not available on this time" });
       }
-      
+
       //check if the ground is available on the booking date and time
       const bookings = await Booking.find({ ground: targetGround._id, bookingDate, bookingTime });
       if (bookings.length > 0) {
@@ -70,8 +72,11 @@ module.exports = {
         }
       }
 
+
+
       const newBooking = new Booking({
         customer,
+        team,
         bookingDate,
         bookingTime,
         bookingDuration,
@@ -84,7 +89,20 @@ module.exports = {
       });
 
       await newBooking.save();
-      return res.status(201).json({ message: "Booking added successfully" } );
+
+      // Create MatchRequest if players are required
+      if (playersRequired > 0) {
+        const newMatchRequest = new MatchRequest({
+          matchMaker: customer,
+          playersRequired,
+          bookingId: newBooking._id
+        });
+        await newMatchRequest.save();
+        console.log('newMatchRequest', newMatchRequest);
+      }
+
+
+      return res.status(201).json({ message: "Booking added successfully" });
     } catch (error) {
       console.log('error in addBooking', error);
       return res.status(500).json({ message: error.message });
@@ -104,7 +122,7 @@ module.exports = {
       return res.status(500).json({ message: error.message });
     }
   },
-  
+
   //cancel booking
   cancelBooking: async (req, res) => {
     try {
@@ -148,3 +166,5 @@ module.exports = {
     }
   }
 };
+
+

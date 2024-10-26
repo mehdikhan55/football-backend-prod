@@ -56,7 +56,7 @@ app.post("/customer/teams/login", customerTeamController.loginTeam);
 // other routes
 app.get("/customer/teams/",customerTeamController.getTeamsForCustomer);
 app.get("/customer/teams/team-profile", customerTeamController.getTeamProfile);
-
+app.get("/bookings", bookingController.getBookings);
 
 // match reqest routes
 app.use("/customer/match-requests", verifyCustomer.verifyCustomer, matchRequestRoutes);

@@ -9,6 +9,7 @@ const interestedPlayersSchema = new mongoose.Schema({
     requestStatus: {
         type: String,
         required: true,
+        default: "pending",
     },
     createdAt: {
         type: Date,

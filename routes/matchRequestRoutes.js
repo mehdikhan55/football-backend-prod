@@ -8,11 +8,15 @@ router.get('/available-match-requests', matchRequestController.getAvailableMatch
 // Route to create a new match request
 router.post('/', matchRequestController.createMatchRequest); 
 
-// Route to express interest in a match request
+// Route to express interest in a match request (more specific first)
+router.patch('/:id/interested/:playerId', matchRequestController.updateInterestStatus);
+
+// Route to express interest in a match request (less specific)
 router.patch('/interested/:id', matchRequestController.interestedMatchRequest); 
 
+
 // Route to reject a match request
-router.patch('/reject/:id', matchRequestController.rejectMatchRequest); 
+// router.patch('/reject/:id', matchRequestController.rejectMatchRequest); 
 
 // Route to get approved requests for a specific customer
 router.get('/approved/:customerId', matchRequestController.getApprovedRequests); 

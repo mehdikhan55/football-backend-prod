@@ -4,6 +4,7 @@ const router = express.Router();
 const adminController = require("../controllers/adminController");
 
 router.get("/customers", adminController.getCustomers);
+router.get("/statistics", adminController.getStatistics);
 router.put("/customer/:id", adminController.setCustomerStatus);
 router.get("/emails", adminController.getEmails);
 router.post("/emails", adminController.addEmail);

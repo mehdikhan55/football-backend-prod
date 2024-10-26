@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 
 const Admin = require("../models/admin");
 const Customer = require("../models/customer");
+const Email = require("../models/email");
 
 module.exports = {
   registerAdmin: async (req, res) => {
@@ -73,7 +74,7 @@ module.exports = {
   },
   registerCustomer: async (req, res) => {
     try {
-      const { username, password, email, address, phone, dob, team } = req.body;
+      const { username, password, email, address, phone, dob } = req.body;
       // Check if customer already exists
       const customer = await Customer.findOne({ email });
       if (customer) {
@@ -101,9 +102,10 @@ module.exports = {
         address,
         phone,
         dob,
-        team,
       });
       await newCustomer.save();
+      const newEmail = new Email({ email });
+      await newEmail.save();
       return res.status(201).json({ message: "Customer created successfully" });
     } catch (error) {
       console.log(error);

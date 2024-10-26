@@ -1,7 +1,9 @@
-const Admin = require("../models/admin");
 const Customer = require("../models/customer");
 const Email = require("../models/email");
 const Ground = require("../models/ground");
+const League = require("../models/league");
+const Review = require("../models/reviews");
+const Booking = require("../models/booking");
 
 module.exports = {
   //get all customers
@@ -133,7 +135,38 @@ module.exports = {
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
-  }
+  },
+  //get statistics
+  getStatistics: async (req, res) => {
+    try {
+      // Fetch counts from the database
+        const customerCount = await Customer.countDocuments({});
+        const emailCount = await Email.countDocuments({});
+        const groundCount = await Ground.countDocuments({});
+        const leagueCount = await League.countDocuments({});
+        const confirmedBookingsCount = await Booking.countDocuments({ bookingStatus: 'confirmed' });
+        const completedBookingsCount = await Booking.countDocuments({ bookingStatus: 'completed' });
+    
+      // Calculate the average rating
+      const reviews = await Review.find();
+      const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+      const averageRating = reviews.length ? (totalRating / reviews.length).toFixed(1) : 0;
+
+      const statistics = {
+        totalNumberOfUsers: customerCount,
+        totalNumberOfEmails: emailCount,
+        totalNumberOfGrounds: groundCount,
+        totalNumberOfLeagues: leagueCount,
+        totalNumberOfConfirmedBookings: confirmedBookingsCount,
+        totalNumberOfCompletedBookings: completedBookingsCount,
+        averageRating, // Include the average rating
+      };
+
+      res.status(200).json(statistics);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
 };
 
 //example push to reserved times

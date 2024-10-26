@@ -30,10 +30,6 @@ const customerSchema = new Schema({
     type: Date,
     required: true,
   },
-  team: {
-    type: String,
-    required: true,
-  },
   points: {
     type: Number,
     default: 0,

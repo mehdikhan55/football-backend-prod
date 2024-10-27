@@ -4,6 +4,7 @@ const Ground = require("../models/ground");
 const League = require("../models/league");
 const Review = require("../models/reviews");
 const Booking = require("../models/booking");
+const Team = require("../models/team");
 
 module.exports = {
   //get all customers
@@ -146,6 +147,7 @@ module.exports = {
         const leagueCount = await League.countDocuments({});
         const confirmedBookingsCount = await Booking.countDocuments({ bookingStatus: 'confirmed' });
         const completedBookingsCount = await Booking.countDocuments({ bookingStatus: 'completed' });
+        const teamCount = await Team.countDocuments({});
     
       // Calculate the average rating
       const reviews = await Review.find();
@@ -159,6 +161,7 @@ module.exports = {
         totalNumberOfLeagues: leagueCount,
         totalNumberOfConfirmedBookings: confirmedBookingsCount,
         totalNumberOfCompletedBookings: completedBookingsCount,
+        totalNumberOfTeams: teamCount,
         averageRating, // Include the average rating
       };
 

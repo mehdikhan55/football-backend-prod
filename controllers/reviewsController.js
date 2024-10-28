@@ -18,10 +18,9 @@ module.exports = {
       }
 
       //create new review
-      const { rating, title, description } = req.body;
+      const { rating, description } = req.body;
       const newReview = new Review({
         rating,
-        title,
         description,
         by: customer._id,
       });

@@ -11,6 +11,11 @@ const interestedPlayersSchema = new mongoose.Schema({
         required: true,
         default: "pending",
     },
+    comments:{
+        type: String,
+        required: false,
+        default: ""
+    },
     createdAt: {
         type: Date,
         default: Date.now,

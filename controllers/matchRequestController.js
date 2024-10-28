@@ -94,7 +94,7 @@ module.exports = {
     interestedMatchRequest: async (req, res) => {
         try {
             const { id } = req.params;
-            const { playerId } = req.body; // ID of the player showing interest
+            const { playerId , comments} = req.body; // ID of the player showing interest
 
             // Validate input
             if (!playerId) {
@@ -121,7 +121,7 @@ module.exports = {
             }
 
             // Add the interested player
-            matchRequest.interestedPlayers.push({ player: playerId, requestStatus: "pending" });
+            matchRequest.interestedPlayers.push({ player: playerId, requestStatus: "pending", comments });
             await matchRequest.save();
 
             return res.status(200).json({ message: "Interest added successfully.", matchRequest });

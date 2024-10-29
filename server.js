@@ -87,9 +87,10 @@ app.get("/", (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
+const dbUrl = process.env.MONGO_URI;
 
 mongoose
-  .connect(`${process.env.MONGO_URI}`)
+  .connect(dbUrl)
   .then(() => {
     app.listen(PORT, () => {
       console.log("Database connected successfully");

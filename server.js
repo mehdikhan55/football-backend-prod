@@ -20,6 +20,7 @@ const leagueRoutes = require("./routes/leagueRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const matchRequestRoutes = require("./routes/matchRequestRoutes");
+const newsBoxRoutes = require("./routes/newsBoxRoutes");
 
 const customerTeamController = require("./controllers/customerTeamController"); 
 const leagueController = require("./controllers/leagueController");
@@ -32,7 +33,7 @@ const app = express();
 
 app.use(cors(
   {
-    origin: "https://football-project-client.vercel.app",
+    origin: ["https://football-project-client.vercel.app","http://localhost:5173"],
   }
 ));
 
@@ -43,6 +44,10 @@ app.use((req, res, next) => {
   console.log(req.method, req.hostname, req.path);
   next();
 })
+
+
+
+app.use("/news", newsBoxRoutes);
 
 app.get("/teams/bookings", bookingController.getBookings);
 app.post("/teams/bookings", bookingController.addBooking);

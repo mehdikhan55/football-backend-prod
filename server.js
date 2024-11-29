@@ -25,6 +25,7 @@ const newsBoxRoutes = require("./routes/newsBoxRoutes");
 const customerTeamController = require("./controllers/customerTeamController"); 
 const leagueController = require("./controllers/leagueController");
 const bookingController = require("./controllers/bookingController");
+const groundController = require("./controllers/groundController");
 
 
 dotenv.config();
@@ -48,6 +49,7 @@ app.use((req, res, next) => {
 
 
 app.use("/news", newsBoxRoutes);
+app.use("/all-grounds", groundController.getGrounds);
 
 app.get("/teams/bookings", bookingController.getBookings);
 app.post("/teams/bookings", bookingController.addBooking);

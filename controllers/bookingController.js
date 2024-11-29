@@ -21,6 +21,12 @@ module.exports = {
     try {
       const { customer, team, playersRequired, bookingDate, bookingTime, bookingDuration, bookingPrice, bookingStatus, paymentMethod, paymentStatus, paymentDate, ground } = req.body;
       console.log('req.body', req.body);
+
+      // New validation: Check if bookingDuration is at least 1.5 hours
+      if (bookingDuration < 1.5) {
+        return res.status(400).json({ message: "Booking duration must be at least 1.5 hours" });
+      }
+
       const targetGround = await Ground.findOne({ _id: ground });
       console.log('targetGround', targetGround);
       if (!targetGround) {

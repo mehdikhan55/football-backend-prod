@@ -61,6 +61,8 @@ app.get("/all-reviews", reviewsController.getReviews);
 app.get("/teams/leagues", leagueController.getLeagues);
 app.get("/teams/leagues/:id", leagueController.getLeague);
 
+app.get("/teams/grounds", groundController.getGrounds);
+
 
 // team auth
 app.post("/customer/teams/register", customerTeamController.registerTeam);

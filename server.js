@@ -35,7 +35,7 @@ const app = express();
 
 app.use(cors(
   {
-    origin: ["https://football-project-client.vercel.app","http://localhost:5173"],
+    origin: ["https://dream-total.com","https://football-project-client.vercel.app","http://localhost:5173"],
   }
 ));
 

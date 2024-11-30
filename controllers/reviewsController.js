@@ -34,7 +34,16 @@ module.exports = {
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
-  }
+  },
+
+  getReviews: async (req, res) => {
+    try {
+      const reviews = await Review.find().populate('by');
+      res.status(200).json({ reviews });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
 };
 
 

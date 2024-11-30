@@ -36,12 +36,17 @@ module.exports = {
       //check if the booking date is less than the current date
       const currentDate = new Date();
       const currentYear = currentDate.getFullYear();
-      const currentMonth = currentDate.getMonth() + 1;
+      const currentMonth = currentDate.getMonth() + 1;  // months are 0-based in JavaScript Date
       const currentDay = currentDate.getDate();
+
       const bookingYear = parseInt(bookingDate.split("-")[0]);
       const bookingMonth = parseInt(bookingDate.split("-")[1]);
       const bookingDay = parseInt(bookingDate.split("-")[2]);
-      if (bookingYear < currentYear || bookingMonth < currentMonth || bookingDay < currentDay) {
+
+      // Compare year, month, and day
+      if (bookingYear < currentYear ||
+        (bookingYear === currentYear && bookingMonth < currentMonth) ||
+        (bookingYear === currentYear && bookingMonth === currentMonth && bookingDay < currentDay)) {
         return res.status(400).json({ message: "Booking date is not valid logically" });
       }
 

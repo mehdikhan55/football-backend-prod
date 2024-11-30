@@ -22,7 +22,11 @@ const matchSchema = new mongoose.Schema({
       score: { type: Number },
     },
   ],
-  winner: { type: mongoose.Schema.Types.ObjectId, ref: "Team" },
+  winner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Team",
+    default: null
+  },
   date: { type: Date },
   createdAt: { type: Date, default: Date.now },
 });

@@ -26,6 +26,7 @@ const customerTeamController = require("./controllers/customerTeamController");
 const leagueController = require("./controllers/leagueController");
 const bookingController = require("./controllers/bookingController");
 const groundController = require("./controllers/groundController");
+const reviewsController = require("./controllers/reviewsController");
 
 
 dotenv.config();
@@ -54,6 +55,7 @@ app.use("/all-grounds", groundController.getGrounds);
 app.get("/teams/bookings", bookingController.getBookings);
 app.post("/teams/bookings", bookingController.addBooking);
 
+app.get("/all-reviews", reviewsController.getReviews);
 
 // leagues 
 app.get("/teams/leagues", leagueController.getLeagues);

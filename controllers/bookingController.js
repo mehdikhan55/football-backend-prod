@@ -1,6 +1,7 @@
 const Booking = require("../models/booking");
 const Ground = require("../models/ground");
 const MatchRequest = require("../models/matchRequest");
+const TeamRequest = require("../models/teamRequest")
 
 module.exports = {
   //get all bookings
@@ -19,7 +20,7 @@ module.exports = {
   addBooking: async (req, res) => {
     console.log('Request entered to addBooking');
     try {
-      const { customer, team, playersRequired, bookingDate, bookingTime, bookingDuration, bookingPrice, bookingStatus, paymentMethod, paymentStatus, paymentDate, ground } = req.body;
+      const { customer, team, playersRequired, bookingDate, bookingTime, bookingDuration, bookingPrice, bookingStatus, paymentMethod, paymentStatus, paymentDate, ground, teamRequired } = req.body;
       console.log('req.body', req.body);
 
       // New validation: Check if bookingDuration is at least 1.5 hours
@@ -96,6 +97,7 @@ module.exports = {
         paymentMethod,
         paymentStatus,
         paymentDate,
+        teamRequired,
         ground
       });
 
@@ -110,6 +112,17 @@ module.exports = {
         });
         await newMatchRequest.save();
         console.log('newMatchRequest', newMatchRequest);
+      }
+
+      console.log("team id comming :",team)
+      if (teamRequired) {
+        const newTeamRequest = new TeamRequest({
+          matchMaker: team,  // The team that created the booking
+          bookingId: newBooking._id,  // Reference to the newly created booking
+          interestedTeams: []  // Initialize with empty array of interested teams
+        });
+        await newTeamRequest.save();
+        console.log('newTeamRequest', newTeamRequest);
       }
 
 

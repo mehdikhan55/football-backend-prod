@@ -53,6 +53,10 @@ const bookingSchema = new Schema({
         type: Number,
         required: false,
     },
+    teamRequired:{
+        type: Boolean,
+        default: false,
+    },
     createdAt: {
         type: Date,
         default: Date.now,

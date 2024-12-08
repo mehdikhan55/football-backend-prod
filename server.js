@@ -21,6 +21,7 @@ const bookingRoutes = require("./routes/bookingRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const matchRequestRoutes = require("./routes/matchRequestRoutes");
 const newsBoxRoutes = require("./routes/newsBoxRoutes");
+const teamRequestRoutes = require("./routes/teamRequestRoutes");
 
 const customerTeamController = require("./controllers/customerTeamController"); 
 const leagueController = require("./controllers/leagueController");
@@ -89,6 +90,7 @@ app.use("/reviews", verifyCustomer.verifyCustomer, reviewsRoutes);
 app.use("/general", generalRoutes);
 // app.use("/admin/challenge", verifyAdmin.verifyAdmin, challengeRoutes);
 app.use("/challenge", challengeRoutes);
+app.use("/team-requests", teamRequestRoutes);
 
 
 

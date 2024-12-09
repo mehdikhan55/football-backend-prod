@@ -76,12 +76,7 @@ module.exports = {
       for (let i = 0; i < bookings2.length; i++) {
         const bookingTimeHour2 = parseInt(bookings2[i].bookingTime.split(":")[0]);
         const bookingEndTimeHour2 = bookingTimeHour2 + bookings2[i].bookingDuration;
-        if (bookingTimeHour >= bookingTimeHour2 && bookingTimeHour < bookingEndTimeHour2) {
-          return res.status(400).json({ message: "Ground is already booked on this time" });
-        }
-        if (bookingEndTime2 > bookingTimeHour2 && bookingEndTime2 <= bookingEndTimeHour2) {
-          return res.status(400).json({ message: "Ground is already booked on this time" });
-        }
+      
       }
 
 

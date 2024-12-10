@@ -28,6 +28,7 @@ const matchSchema = new mongoose.Schema({
     default: null
   },
   date: { type: Date },
+  time: { type: String },
   createdAt: { type: Date, default: Date.now },
 });
 

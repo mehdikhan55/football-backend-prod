@@ -58,28 +58,23 @@ module.exports = {
       if (bookingTimeHour < startTime || bookingTimeHour >= endTime) {
         return res.status(400).json({ message: "Ground is closed on this time" });
       }
-      //check if the booking duration is available on the booking date and time
-      const bookingEndTime = bookingTimeHour + bookingDuration;
-      if (bookingEndTime > endTime) {
-        return res.status(400).json({ message: "Booking duration is not available on this time" });
+
+      // Convert booking time and duration into start and end time in hours for easy comparison
+      const bookingStartTime = parseInt(bookingTime.split(":")[0]) + parseInt(bookingTime.split(":")[1]) / 60;
+      const bookingEndTime = bookingStartTime + bookingDuration;
+
+      // Check if the ground is already booked within the time range
+      const bookings = await Booking.find({ ground: targetGround._id, bookingDate });
+
+      for (let i = 0; i < bookings.length; i++) {
+        const existingBookingStartTime = parseInt(bookings[i].bookingTime.split(":")[0]) + parseInt(bookings[i].bookingTime.split(":")[1]) / 60;
+        const existingBookingEndTime = existingBookingStartTime + bookings[i].bookingDuration;
+
+        // Check for overlap
+        if ((bookingStartTime < existingBookingEndTime && bookingEndTime > existingBookingStartTime)) {
+          return res.status(400).json({ message: "Ground is already booked during this time range" });
+        }
       }
-
-      //check if the ground is available on the booking date and time
-      const bookings = await Booking.find({ ground: targetGround._id, bookingDate, bookingTime });
-      if (bookings.length > 0) {
-        return res.status(400).json({ message: "Ground is already booked on this date and time" });
-      }
-
-      //check if the time is already reserved
-      const bookingEndTime2 = bookingTimeHour + bookingDuration;
-      const bookings2 = await Booking.find({ ground: targetGround._id, bookingDate });
-      for (let i = 0; i < bookings2.length; i++) {
-        const bookingTimeHour2 = parseInt(bookings2[i].bookingTime.split(":")[0]);
-        const bookingEndTimeHour2 = bookingTimeHour2 + bookings2[i].bookingDuration;
-      
-      }
-
-
 
       const newBooking = new Booking({
         customer,
@@ -109,7 +104,7 @@ module.exports = {
         console.log('newMatchRequest', newMatchRequest);
       }
 
-      console.log("team id comming :",team)
+      console.log("team id comming :", team)
       if (teamRequired) {
         const newTeamRequest = new TeamRequest({
           matchMaker: team,  // The team that created the booking
@@ -120,13 +115,13 @@ module.exports = {
         console.log('newTeamRequest', newTeamRequest);
       }
 
-
       return res.status(201).json({ message: "Booking added successfully" });
     } catch (error) {
       console.log('error in addBooking', error);
       return res.status(500).json({ message: error.message });
     }
-  },
+},
+  
   // update a booking
   updateBooking: async (req, res) => {
     try {

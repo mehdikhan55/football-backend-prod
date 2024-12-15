@@ -23,7 +23,8 @@ module.exports = {
                 .populate("matches.teamA")
                 .populate("matches.teamB")
                 .populate("matches.winner")
-                .populate("matches.scorers.team");
+                .populate("matches.scorers.team")
+                .populate("matches.assists.team");
 
             if (!league) {
                 return res.status(404).json({ message: "League not found" });

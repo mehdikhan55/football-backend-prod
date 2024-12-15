@@ -15,7 +15,20 @@ const matchSchema = new mongoose.Schema({
     teamA: { type: Number },
     teamB: { type: Number },
   },
+  cleanSheets: {
+    teamA: { type: Boolean, default: false },
+    teamB: { type: Boolean, default: false },
+    goalKeeperA: String,
+    goalKeeperB: String
+  },
   scorers: [
+    {
+      player: { type: String },
+      team: { type: mongoose.Schema.Types.ObjectId, ref: "Team" },
+      score: { type: Number },
+    },
+  ],
+  assists: [
     {
       player: { type: String },
       team: { type: mongoose.Schema.Types.ObjectId, ref: "Team" },
@@ -32,7 +45,7 @@ const matchSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-// League Schema
+
 const leagueSchema = new mongoose.Schema({
   leagueName: { type: String, required: true },
   startDate: { type: Date, required: true },
@@ -41,7 +54,6 @@ const leagueSchema = new mongoose.Schema({
   matches: [matchSchema],
 });
 
-// Model
 const League = mongoose.model("League", leagueSchema);
 
 module.exports = League;
